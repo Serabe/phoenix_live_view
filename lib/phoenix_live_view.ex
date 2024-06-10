@@ -80,7 +80,7 @@ defmodule Phoenix.LiveView do
 
   ### Async assigns
 
-  The `assign_async/3` function takes the socket, a key or list of keys which will be assigned
+  The `assign_async/4` function takes the socket, a key or list of keys which will be assigned
   asynchronously, and a function. This function will be wrapped in a `task` by
   `assign_async`, making it easy for you to return the result. This function must
   return an `{:ok, assigns}` or `{:error, reason}` tuple, where `assigns` is a map
@@ -1893,7 +1893,7 @@ defmodule Phoenix.LiveView do
   Assigns keys asynchronously.
 
   Wraps your function in a task linked to the caller, errors are wrapped.
-  Each key passed to `assign_async/3` will be assigned to
+  Each key passed to `assign_async/4` will be assigned to
   an `%AsyncResult{}` struct holding the status of the operation
   and the result when the function completes.
 
@@ -1917,10 +1917,10 @@ defmodule Phoenix.LiveView do
 
   See the moduledoc for more information.
 
-  ## `assign_async/3` and `send_update/3`
+  ## `assign_async/4` and `send_update/3`
 
-  Since the code inside `assign_async/3` runs in a separate process,
-  `send_update(Component, data)` does not work inside `assign_async/3`,
+  Since the code inside `assign_async/4` runs in a separate process,
+  `send_update(Component, data)` does not work inside `assign_async/4`,
   since `send_update/2` assumes it is running inside the LiveView process.
   The solution is to explicitly send the update to the LiveView:
 
@@ -1976,11 +1976,11 @@ defmodule Phoenix.LiveView do
   @doc """
   Cancels an async operation if one exists.
 
-  Accepts either the `%AsyncResult{}` when using `assign_async/3` or
+  Accepts either the `%AsyncResult{}` when using `assign_async/4` or
   the key passed to `start_async/3`.
 
   The underlying process will be killed with the provided reason, or
-  with `{:shutdown, :cancel}` if no reason is passed. For `assign_async/3`
+  with `{:shutdown, :cancel}` if no reason is passed. For `assign_async/4`
   operations, the `:failed` field will be set to `{:exit, reason}`.
   For `start_async/3`, the `c:handle_async/3` callback will receive
   `{:exit, reason}` as the result.
